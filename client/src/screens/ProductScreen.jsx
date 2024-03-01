@@ -1,14 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { products } from "../data/products";
+import axios from "axios";
 
 export default function ProductScreen() {
+  const [product, setProduct] = useState({});
   const { id } = useParams();
-  const product = products.find((product) => product.id == id);
-  console.log(product);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const res= await axios.get(`/api/product/${id}`);
+      setProduct(res.data);
+    };
+    fetchProduct();
+  }, [id]);
+
   return (
     <div className="bg-slate-100 shadow-2xl rounded-md container mx-auto mt-4 p-8">
-      <Link to={'/'}>
+      <Link to={"/"}>
         <button className="bg-yellow-400 mb-1 p-1 font-medium uppercase text-white rounded-md hover:font-bold hover:bg-white hover:text-amber-400">
           Go Back
         </button>
@@ -35,7 +43,7 @@ export default function ProductScreen() {
             <span className="font-thin">({product.numReviews} reviews)</span>
           </div>
           <h2 className="font-semibold text-left mt-2 mx-2 p-2">
-            ${product.price.toFixed(2)}
+            ${product.price?.toFixed(2)}
           </h2>
           <p className="font-thin text-left mt-2 mx-2 p-2">
             In Stock: {product.countInStock}
