@@ -1,23 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Product from "../components/Product";
-import axios from "axios";
+import { useGetProductsQuery } from "../app/slices/productSlice";
+import CircularProgress from "@mui/material/CircularProgress";
+import { toast } from "react-toastify";
 
 export default function HomeScreen() {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const res = await axios.get("/api/products");
-      setProducts(res.data)
-    };
-    fetchProducts();
-  }, []);
+  const { data: products, isLoading, error } = useGetProductsQuery();
 
   return (
-    <div className="border border-red=500 grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-4">
-      {products.map((product, i) => (
-        <Product key={i} product={product} />
-      ))}
-    </div>
+    <>
+      {isLoading ? (
+        <div className="flex justify-center items-center">
+          <CircularProgress />
+        </div>
+      ) : error ? (
+        toast.error(error?.data?.message)
+      ) : (
+        <div className="border border-red=500 grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          {products.map((product, i) => (
+            <Product key={i} product={product} />
+          ))}
+        </div>
+      )}
+    </>
   );
 }

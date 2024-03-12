@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function Product({ product }) {
   return (
-    <Link to={`product/${product.id}`}>
+    <Link to={`product/${product._id}`}>
       <div className="shadow-xl rounded-sm my-4 mx-4 sm:mx-2 md:mx-0">
         <img
           src={product.image}
