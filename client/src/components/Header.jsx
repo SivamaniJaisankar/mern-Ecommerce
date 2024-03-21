@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FiShoppingCart, FiUser, FiLogOut } from "react-icons/fi";
+import { useSelector } from "react-redux";
 
 export default function Header() {
   const [profileMenu, setProfileMenu] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
+  const { cartItems } = useSelector((state) => state.cart);
 
   return (
     <nav className="bg-cyan-800">
@@ -31,9 +33,14 @@ export default function Header() {
         </div>
         <div className="hidden p-3 md:flex items-center">
           <div className="text-white font-semibold uppercase cursor-pointer mr-3 hover:font-bold">
-            <Link className="flex items-center">
+            <Link to="/cart" className="flex items-center">
               <FiShoppingCart className="mr-1" />
               Cart
+              {cartItems.length !== 0 && (
+                <span className="bg-blue-400 text-white rounded-full px-2">
+                  {cartItems.length}
+                </span>
+              )}
             </Link>
           </div>
           <div className="text-white font-semibold cursor-pointer mr-3 hover:font-bold">
@@ -77,13 +84,20 @@ export default function Header() {
         </div>
       </div>
 
-      {/* .......MOBILE MENU....... */}
+      {/* .......MOBILE MENU.......
+       */}
 
       {mobileMenu && (
         <div className="mt-4">
-          <Link className="flex text-white text-md font-semibold mb-2 uppercase cursor-pointer hover:font-bold">
+          <Link
+            to="/cart"
+            className="flex text-white text-md font-semibold mb-2 uppercase cursor-pointer hover:font-bold"
+          >
             <FiShoppingCart className="mr-1" />
             Cart
+            <span className="bg-blue-400 text-white rounded-full px-2">
+              {cartItems.length}
+            </span>
           </Link>
           <div className="text-white font-semibold uppercase cursor-pointer ml-5 mb-2 hover:font-bold">
             <Link>Sign In</Link>
