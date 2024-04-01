@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useGetProductDetailsQuery } from "../app/slices/productSlice";
+import { useGetProductDetailsQuery } from "../app/slices/productApiSlice";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "react-toastify";
 import { addToCart } from "../app/slices/cartSlice";
@@ -20,13 +20,13 @@ export default function ProductScreen() {
 
   const addToCartHandler = () => {
     dispatch(addToCart({ ...product, qty }));
-    navigate('/cart')
+    navigate("/cart");
   };
 
   return (
     <div className="bg-slate-100 shadow-2xl rounded-md container mx-auto mt-4 p-8">
       <Link to={"/"}>
-        <button className="bg-yellow-400 mb-1 p-1 font-medium uppercase text-white rounded-md hover:font-bold hover:bg-white hover:text-amber-400">
+        <button className="px-3 py-1 outline-none border-none bg-yellow-400 mb-1 font-medium uppercase text-white rounded-sm hover:shadow-md hover:shadow-amber-500">
           Go Back
         </button>
       </Link>
@@ -80,7 +80,7 @@ export default function ProductScreen() {
             </div>
             <Link>
               <button
-                className="bg-yellow-400 mt-2 mx-2 mb-1 p-1 font-medium uppercase text-white rounded-md hover:font-bold hover:bg-white hover:text-amber-400"
+                className="px-3 py-1 bg-yellow-400 mt-2 mx-2 mb-4 font-medium uppercase text-white rounded-sm hover:shadow-md hover:shadow-amber-500"
                 onClick={addToCartHandler}
               >
                 Add to Cart

@@ -1,6 +1,6 @@
 import React from "react";
 import Product from "../components/Product";
-import { useGetProductsQuery } from "../app/slices/productSlice";
+import { useGetProductsQuery } from "../app/slices/productApiSlice";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "react-toastify";
 

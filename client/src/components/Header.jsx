@@ -21,11 +21,11 @@ export default function Header() {
             <input
               type="text"
               placeholder="Search"
-              className="p-1 mr-2 bg-slate-100 rounded-lg hidden sm:block outline-none"
+              className="px-2 py-1 mr-2 text-md text-gray-400 border-none bg-gray-200 rounded-sm hidden sm:block outline-none hover:shadow-md hover:shadow-blue-100"
             />
             <button
               type="submit"
-              className="p-1 bg-blue-400 text-white uppercase font-semibold rounded-md hidden sm:block hover:font-bold"
+              className="px-6 py-1 outline-none border-none bg-blue-400 text-white uppercase font-semibold rounded-sm hidden sm:block hover:shadow-md hover:shadow-blue-100"
             >
               Search
             </button>
@@ -77,7 +77,7 @@ export default function Header() {
         <div className="md:hidden">
           <button
             onClick={() => setMobileMenu(!mobileMenu)}
-            className="relative text-white font-semibold text-xl"
+            className="relative text-white font-semibold text-xl hover:font-bold hover:shadow-xl hover:shadow-blue-100"
           >
             ☰
           </button>
