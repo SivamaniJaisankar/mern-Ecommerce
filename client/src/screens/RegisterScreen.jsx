@@ -25,7 +25,7 @@ export default function RegisterScreen() {
         const res = await register({ name, email, password }).unwrap();
         console.log(res);
         dispatch(setCredentials({ ...res }));
-        navigate("/");
+        navigate("/login");
         toast.success("Register Successful");
       } catch (error) {
         console.log(error);

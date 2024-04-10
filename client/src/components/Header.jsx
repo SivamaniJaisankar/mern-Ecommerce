@@ -1,12 +1,71 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FiShoppingCart, FiUser, FiLogOut } from "react-icons/fi";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useLogoutMutation } from "../app/slices/userApiSlice";
+import { logout } from "../app/slices/userSlice";
+import { toast } from "react-toastify";
 
 export default function Header() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [profileMenu, setProfileMenu] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const { cartItems } = useSelector((state) => state.cart);
+  const { userInfo } = useSelector((state) => state.user);
+
+  const [ logoutApi ] = useLogoutMutation();
+
+  const renderProfileButton = () => {
+    return (
+      <>
+        <button
+          onClick={() => setProfileMenu(!profileMenu)}
+          className="flex items-center relative uppercase"
+        >
+          <FiUser className="mr-1" />
+          Profile
+        </button>
+        <ul
+          className={`absolute ${
+            profileMenu ? "block" : "hidden"
+          } bg-cyan-800 text-white font-semibold uppercase cursor-pointer px-2 mt-5 rounded-sm border border-white`}
+        >
+          <li>
+            <Link to="/profile" className="flex mb-2 hover:font-bold border border-white text-nowrap">
+              <FiUser className="mr-2" />
+              View Profile
+            </Link>
+          </li>
+          <li>
+            <Link onClick={handleLogout} className="flex mb-2 hover:font-bold">
+              <FiLogOut className="mr-2" />
+              Logout
+            </Link>
+          </li>
+        </ul>
+      </>
+    );
+  };
+
+  const renderSigninButton = () => {
+    return (
+      <Link to="/login">
+        <button className="text-white uppercase">Sign In</button>
+      </Link>
+    );
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logoutApi().unwrap();
+      dispatch(logout());
+      navigate("/login");
+      toast.success("Logged Out Successfully");
+    } catch (error) {
+      toast.error(error?.data?.message || error?.error);
+    }
+  };
 
   return (
     <nav className="bg-cyan-800">
@@ -44,34 +103,8 @@ export default function Header() {
             </Link>
           </div>
           <div className="text-white font-semibold cursor-pointer mr-3 hover:font-bold">
-            <button
-              onClick={() => setProfileMenu(!profileMenu)}
-              className="flex items-center relative uppercase"
-            >
-              <FiUser className="mr-1" />
-              Profile
-            </button>
-            <ul
-              className={`absolute ${
-                profileMenu ? "block" : "hidden"
-              } bg-cyan-800 text-white font-semibold uppercase cursor-pointer p-2 mt-4 rounded-xl`}
-            >
-              <li>
-                <Link className="flex mb-2 hover:font-bold">
-                  <FiUser className="mr-2" />
-                  View Profile
-                </Link>
-              </li>
-              <li>
-                <Link className="flex mb-2 hover:font-bold">
-                  <FiLogOut className="mr-2" />
-                  Logout
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div className="text-white font-semibold uppercase cursor-pointer mr-3 hover:font-bold">
-            <Link>Sign In</Link>
+            {userInfo && renderProfileButton()}
+            {!userInfo && renderSigninButton()}
           </div>
         </div>
         <div className="md:hidden">
@@ -99,35 +132,9 @@ export default function Header() {
               {cartItems.length}
             </span>
           </Link>
-          <div className="text-white font-semibold uppercase cursor-pointer ml-5 mb-2 hover:font-bold">
-            <Link>Sign In</Link>
-          </div>
-          <div className="text-white text-md mb-2 font-semibold hover:font-bold">
-            <button
-              onClick={() => setProfileMenu(!profileMenu)}
-              className="flex items-center relative uppercase cursor-pointer"
-            >
-              <FiUser className="mr-1" />
-              Profile
-            </button>
-            <ul
-              className={`absolute ${
-                profileMenu ? "block" : "hidden"
-              } bg-cyan-800 text-white font-semibold uppercase cursor-pointer p-2 ml-20 rounded-sm`}
-            >
-              <li>
-                <Link className="flex mb-2 hover:font-bold">
-                  <FiUser className="mr-2" />
-                  View Profile
-                </Link>
-              </li>
-              <li>
-                <Link className="flex mb-2 hover:font-bold">
-                  <FiLogOut className="mr-2" />
-                  Logout
-                </Link>
-              </li>
-            </ul>
+          <div className="text-white font-semibold cursor-pointer mr-3 hover:font-bold">
+            {userInfo && renderProfileButton()}
+            {!userInfo && renderSigninButton()}
           </div>
         </div>
       )}

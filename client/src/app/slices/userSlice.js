@@ -18,9 +18,14 @@ const userSlice = createSlice({
 
       localStorage.setItem("expirationTime", expirationTime);
     },
+    logout: (state) => {
+      state.userInfo = null;
+      localStorage.removeItem("userInfo")
+      localStorage.removeItem("expirationTime")
+    }
   },
 });
 
-export const { setCredentials } = userSlice.actions;
+export const { setCredentials, logout } = userSlice.actions;
 
 export default userSlice.reducer;
